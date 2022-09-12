@@ -52,8 +52,12 @@ struct emprestimos{
 	int codigo;
 	int ra_aluno;
 	int codigo_livro;
-	char data_emprestimo[8];
-	char data_devolucao[8];
+	int dia;
+	int mes;
+	int ano;
+	int diaD;
+	int mesD;
+	int anoD;
 	char situacao;
 	int status;
 };
@@ -71,7 +75,7 @@ void leitura_alunos(struct alunos alu[], int &cont){
 		if(alu[i].ra > 0){
 			cout << "Nome: ";
 			cin >> alu[i].nome;
-            cout << "Endereço: ";
+            cout << "EndereÃ§o: ";
             cin >> alu[i].endereco;
             cout << "Telefone: ";
             cin >> alu[i].telefone;
@@ -90,7 +94,7 @@ leitura_indice (struct ind_alunos idx[], int cont){
     for (int i = 0; i < cont; i++){
         cout << "\n\nRA do aluno no Indice " << (i+1) << ": ";
         cin >> idx[i].codigo;
-        cout << "Endereco Físico na Area de Dados: ";
+        cout << "Endereco FÃ­sico na Area de Dados: ";
         cin >> idx[i].ender;
     }
 }
@@ -107,7 +111,7 @@ void inclusao_alunos (struct ind_alunos idx[], struct alunos alu[], int &cont, i
     }
     i = idx[m].ender;
     if ((cod == idx[m].codigo)){
-        cout << "\n\n Aluno já existe";
+        cout << "\n\n Aluno jÃ¡ existe";
         cout << "RA: ";
     	cin >> cod;
     }
@@ -128,7 +132,6 @@ void inclusao_alunos (struct ind_alunos idx[], struct alunos alu[], int &cont, i
     cout << "Estado: ";
     cin >> alu[cont].uf;
     alu[cont].status == 0;
-    // inclusao na area de indices
     
     for (i = cont - 1; idx[i].codigo > cod; i--){
         idx[i+1].codigo = idx[i].codigo;
@@ -148,7 +151,7 @@ void busca_alunos (struct ind_alunos idx[], struct alunos alu[], int cont){
 		if(alu[m].status==0){
 			cout << "\nRA:" << alu[m].ra << endl;
 			cout << "Nome: " << alu[m].nome << endl;
-			cout << "Endereço: " << alu[m].endereco << endl;
+			cout << "EndereÃ§o: " << alu[m].endereco << endl;
 			cout << "Telefone: " << alu[m].telefone << endl;
 			cout << "Cidade: " << alu[m].cidade << endl;
 			cout << "Estado: " << alu[m].uf << endl;
@@ -172,19 +175,19 @@ void exclusao_aluno (struct ind_alunos idx[], struct alunos alu[], int &cont, in
         cout << "\n\n Aluno " << alu[i].nome << " Excluido com Sucesso!" << endl;
     }
     else
-        cout << "Aluno não cadastrado";
+        cout << "Aluno nÃ£o cadastrado";
     getch();
 }
 
 void leitura_editoras(struct editoras edt[], int &cont){
 	int i = 0;
 	for(int saida = 1; i < 20 && saida != 0; i++){
-		cout << "\n\nCódigo da editora " << (i+1) << ": ";
+		cout << "\n\nCÃ³digo da editora " << (i+1) << ": ";
 		cin >> edt[i].codigo;
 		if(edt[i].codigo > 0){
 			cout << "Nome: ";
 			cin >> edt[i].nome;
-			cout << "Endereço: ";
+			cout << "EndereÃ§o: ";
 			cin >> edt[i].endereco;
 			cout << "Telefone: ";
 			cin >> edt[i].telefone;
@@ -212,7 +215,7 @@ void inclusao_editoras (struct ind_editoras idx[], struct editoras edt[], int &c
 	edt[cont].codigo = cod;
 	cout << "Nome: ";
 	cin >> edt[cont].nome;
-	cout << "Endereço: ";
+	cout << "EndereÃ§o: ";
 	cin >> edt[cont].endereco;
 	cout << "Telefone: ";
 	cin >> edt[cont].telefone;
@@ -246,7 +249,7 @@ void exclusao_editora (struct ind_editoras idx[], struct editoras edt[], int &co
         cout << "\n\n Editora Excluido com Sucesso";
     }
     else
-        cout << "Editora não cadastrado";
+        cout << "Editora nÃ£o cadastrado";
     getch();
 }
 
@@ -265,25 +268,25 @@ void busca_editora (struct ind_editoras idx[], struct editoras edt[], int &cont,
         cout << "\n\nEditora: " << edt[m].nome;
     }
     else
-        cout << "\n \nEditora não cadastrado";
+        cout << "\n \nEditora nÃ£o cadastrado";
     getch();
 }
 
 void leitura_livros(struct livros liv[], int &cont, struct editoras edt[], struct ind_editoras idx[]){
 	int i = 0;
 	for(int saida = 1; i < 20 && saida != 0; i++){
-		cout << "\n\nCódigo do Livro " << (i+1) << ": ";
+		cout << "\n\nCÃ³digo do Livro " << (i+1) << ": ";
 		cin >> liv[i].codigo;
 		if(liv[i].codigo > 0){
-			cout << "Descrição: ";
+			cout << "DescriÃ§Ã£o: ";
 			cin >> liv[i].descricao;
-			cout << "Código da Editora: ";
+			cout << "CÃ³digo da Editora: ";
 			cin >> liv[i].cod_editora;
 			
 			if(liv[i].cod_editora == edt[i].codigo){
 				cout << "Editora " << edt[i].nome << endl;
 			}else{
-				cout << "Código da Editora não cadastrado no sistema." << endl;
+				cout << "CÃ³digo da Editora nÃ£o cadastrado no sistema." << endl;
 			}
 			liv[i].situacao = 'd';
 		}
@@ -304,9 +307,9 @@ leitura_indice_liv (struct ind_livros idx[], int cont){
 void inclusao_livros(struct ind_livros idx[], struct livros liv[], int &cont, int cod){
 	cont ++;
 	liv[cont].codigo = cod;
-	cout << "Descrição: ";
+	cout << "DescriÃ§Ã£o: ";
 	cin >> liv[cont].descricao;
-	cout << "Código Editora: ";
+	cout << "CÃ³digo Editora: ";
 	cin >> liv[cont].cod_editora;
 	liv[cont].situacao = 'd';
 	
@@ -335,14 +338,15 @@ void exclusao_livros (struct ind_livros idx[], struct livros liv[], int &cont, i
         cout << "\n\n Livro Excluido com Sucesso";
     }
     else
-        cout << "Livro não cadastrado";
+        cout << "Livro nÃ£o cadastrado";
     getch();
 }
 
 void leitura_emprestimos(struct emprestimos emp[], int &cont, struct alunos alu[], struct ind_alunos idx[], struct livros liv[], struct ind_livros idxL[]){
 	int i = 0;
+	int devDia, devMes, devAno;
 	for(int saida = 1; i < 20 && saida != 0; i++){
-		cout << "\n\nCódigo do Empréstimo " << (i+1) << ": ";
+		cout << "\n\nCÃ³digo do EmprÃ©stimo " << (i+1) << ": ";
 		cin >> emp[i].codigo;
 		if(emp[i].codigo > 0){
 			cout << "RA do Aluno: ";
@@ -350,23 +354,41 @@ void leitura_emprestimos(struct emprestimos emp[], int &cont, struct alunos alu[
 			if(emp[i].ra_aluno == alu[i].ra){
 				cout << "Aluno: " << alu[i].nome << endl;
 			}else{
-				cout << "Aluno não cadastrado no sistema." << endl;
+				cout << "Aluno nÃ£o cadastrado no sistema." << endl;
 			}
 				
-			cout << "Código do Livro: ";
+			cout << "CÃ³digo do Livro: ";
 			cin >> emp[i].codigo_livro;
 			if(emp[i].codigo_livro == liv[i].codigo){
 				cout << "Livro: " << liv[i].descricao << endl;
 			}else{
-				cout << "Livro não cadastrado no sistema." << endl;
+				cout << "Livro nÃ£o cadastrado no sistema." << endl;
 			}
 			if(liv[i].situacao == 'd'){
-				cout << "Data do Empréstimo: ";
-				cin >> emp[i].data_emprestimo;
-				cout << "Data de Devolução: ";
-				cin >> emp[i].data_devolucao;
+				cout << "\nData de emprestimo: " << endl;	
+				cout << "Dia: ";
+				cin >> emp[i].dia;
+				cout << "Mes: ";
+				cin >> emp[i].mes;
+				cout << "Ano: ";
+				cin >> emp[i].ano;
+				cout << "\nData informada: " << emp[i].dia << "/" << emp[i].mes << "/" << emp[i].ano << endl;
+				
+				cout << "\nData de Devolucao: " << endl;
+				cout << "Dia: ";
+				cin >> emp[i].diaD;
+				cout << "Mes: ";
+				cin >> emp[i].mesD;
+				cout << "Ano: ";
+				cin >> emp[i].anoD;
+				cout << "\nData informada para devolucao: " << emp[i].diaD << "/" << emp[i].mesD << "/" << emp[i].anoD << endl;
+	
+				devDia = emp[i].diaD;
+				devMes = emp[i].mesD;
+				devAno = emp[i].mesD;
+				
 			}else if(liv[i].situacao == 'e'){
-				cout << "Livro Indisponível." << endl;
+				cout << "Livro IndisponÃ­vel." << endl;
 			}
 			liv[i].situacao = 'e';	
 			emp[i].situacao = 'e';
@@ -386,30 +408,6 @@ leitura_indice_emp (struct ind_emprestimos idx[], int cont){
     }
 }
 
-void inclusao_emprestimos(struct ind_emprestimos idx[], struct emprestimos emp[], int &cont, int cod){
-	cont ++;
-	emp[cont].codigo = cod;
-	cout << "RA do Aluno: ";
-	cin >> emp[cont].ra_aluno;
-	cout << "Código do Livro: ";
-	cin >> emp[cont].codigo_livro;
-	cout << "Data do Empréstimo: ";
-	cin >> emp[cont].data_emprestimo;
-	cout << "Data de Devolução: ";
-	cin >> emp[cont].data_devolucao;
-	cout << "Situação: ";
-	cin >> emp[cont].situacao;
-	
-	int i;
-    for (i = cont - 1; idx[i].codigo > cod; i--){
-        idx[i+1].codigo = idx[i].codigo;
-        idx[i+1].ender = idx[i].ender;
-    }
-    idx[i+1].codigo = cod;
-    idx[i+1].ender = cont;
-    cout << "\n\nInclusao realizada com Sucesso";	
-}
-
 void exclusao_emprestimo (struct ind_emprestimos idx[], struct emprestimos emp[], int &cont, int cod){
     int i = 0, f = cont;
     int m = (i + f) / 2;
@@ -425,36 +423,68 @@ void exclusao_emprestimo (struct ind_emprestimos idx[], struct emprestimos emp[]
         cout << "\n\n Emprestimo Excluido com Sucesso";
     }
     else
-        cout << "Emprestimo não cadastrado";
+        cout << "Emprestimo nÃ£o cadastrado";
     getch();
 }
 
 void devolver_livro(struct livros liv[], struct ind_livros idxL[], int &cont){
-	int i, x, cod;
-	cout << "Informe o código do livro para verificar a situação: " << endl;
+	int i, cod;
+	int x =  0;
+	
+	cout << "Informe o cÃ³digo do livro para verificar a situaÃ§Ã£o: " << endl;
 	cin >> cod;
 	if(cod == liv[i].codigo){
-				cout << liv[i].descricao << endl;
-				if(liv[i].situacao == 'e'){
-					cout << "O Livro está emprestado, deseja devolver? (Digite 1 para devolver, 2 para cancelar)";
-					cin >> x;
-					if(x =! 1)
-						cout << "Consulta Cancelada" << endl;						
-					else
-						liv[i].situacao = 'd';
-						cout << "Livro Devolvido" << endl;
-					
-				}else if(liv[i].situacao == 'd'){
-					cout << "O livro está disponível";
-				}
-			}
+		cout << liv[i].descricao << endl;
+		if(liv[i].situacao == 'e'){
+			cout << "O Livro estÃ¡ emprestado, deseja devolver? (Digite 1 para devolver, 2 para cancelar)";
+			cin >> x;
+			cout << x;
+			if(x == 1){
+				cout << "Livro Devolvido" << endl;
+				liv[i].situacao = 'd';
+				if(liv[i].situacao == 'd'){
+					cout << "O livro estÃ¡ disponÃ­vel";
+				}					
+			}if(x == 2){
+				cout << "Consulta Cancelada" << endl;						
+			}	
+		}				
+	}
 }
+
+void atraso(struct emprestimos emp[], ind_emprestimos idx[], int &cont, struct livros liv[], struct ind_livros idxL[]){
+	int i = 0;
+	int cod, diaT, mesT, anoT;
+	
+	cout << "Consultar EmprÃ©stimos com atraso" << endl;
+	cout << "Informe a data de hoje:";
+	cout << "\nDia: ";
+	cin >> diaT;
+	cout << "Mes: ";
+	cin >> mesT;
+	cout << "Ano: ";
+	cin >> anoT;
+	cout << "\n\nInforme o codigo do emprestimo: " << endl;
+	cin >> cod;
+	if(cod == emp[i].codigo){
+		cout << "\nEmprestimo do livro cÃ³digo " << emp[i].codigo_livro << ".";
+		cout << "\nDescriÃ§Ã£o do livro: " << liv[i].descricao << ".";
+		cout << "\nData para devoluÃ§Ã£o do livro: " << emp[i].diaD << "/" << emp[i].mesD << "/" << emp[i].anoD << endl;
+		
+		if(emp[i].diaD < diaT || emp[i].mesD < mesT || emp[i].anoD < anoT){
+			cout << "O emprÃ©stimo estÃ¡ com atraso";
+		}
+		}else{
+			cout << "EmprÃ©stimo em dia!";
+		}
+		
+	}
 
 void menu(){
 	cout << "---------- Menu Sistema Biblioteca ----------" << endl;
-	cout << "\nSelecione uma opção: " << endl;
-	cout << "\n1 - Digitar Dados Do Aluno \n\n2 - Digitar Dados Da Editora \n\n3 - Digitar Dados do Livro \n\n4 - Registrar Empréstimo\n\n5 - Incluir Novo Registro de Aluno\n\n6 - Mostrar Alunos\n\n";
-	cout << "7 - Excluir Aluno\n\n8 - Excluir Empréstimo\n\n9 - Devolver Livro\n\n10 - Consultar prazos\n\n";
+	cout << "\nSelecione uma opÃ§Ã£o: " << endl;
+	cout << "\n1 - Digitar Dados Do Aluno \n\n2 - Digitar Dados Da Editora \n\n3 - Digitar Dados do Livro \n\n4 - Registrar EmprÃ©stimo\n\n5 - Incluir Novo Registro de Aluno\n\n6 - Excluir Aluno\n\n";
+	cout << "7 - Incluir Editora\n\n8 - Excluir Editora\n\n9 - Incluir Livro\n\n10 - Excluir Livro\n\n11 - Excluir EmprÃ©stimo\n\n12 - Devolver Livro\n\n13 - Consultar Prazos\n\n";
 }
 
 int main(){
@@ -463,34 +493,23 @@ int main(){
 	int op;
 	struct alunos alu[3];
 	struct ind_alunos idxA[3];
-	int idxEx, cod; // exclusao
-	
 	
 	struct editoras edt[3];
 	struct ind_editoras idxEdt[3];
-	
-	
+		
 	struct livros liv[3];
 	struct ind_livros idxL[3];
 	
 	struct emprestimos emp[3];
 	struct ind_emprestimos idxEmp[3];
 		
-	int cont, contE, contIdx, codInc, ra;
-	int idxB, aluB, contB, raB;
-	
-	int idxLiv; //emprestimo
-	
-	
-	
-	//Variáveis da inclusao:
-	int idxInc, aluInc;
+	int cont, codInc;
 	
 	int x=1;
  	while(x==1){
   
   	menu();
-  	cout<<"Escolha a opção desejada: ";
+  	cout<<"Escolha a opÃ§Ã£o desejada: ";
   	cin>>op;
 	
 	
@@ -507,7 +526,7 @@ int main(){
 			leitura_indice_edt(idxEdt, cont);
 			break;
 		case 3:
-			cout << "Digite as informações do livro: " << endl;			
+			cout << "Digite os dados do livro: " << endl;			
 			leitura_livros(liv, cont, edt, idxEdt);
 			leitura_indice_liv(idxL, cont);
 			break;
@@ -523,36 +542,64 @@ int main(){
 			leitura_indice(idxA, cont);
 			break;
 		case 6:
-            busca_alunos(idxA, alu, cont);
-            break;
-    	case 7:
-    		for (int codpesq = 9; codpesq != 0;){
-        		cout << "\n\nInforme o RA do Aluno a ser Excluído (0 para Encerrar): ";
+			for (int codpesq = 9; codpesq != 0;){
+        		cout << "\n\nInforme o RA do Aluno a ser ExcluÃ­do (0 para Encerrar): ";
         		cin >> codpesq;
         		if (codpesq != 0)
             	exclusao_aluno (idxA, alu, cont, codpesq);
     		}
     		break;
+		case 7:
+            for (int codpesq = 9; codpesq != 0;){
+        		cout << "\n\nInforme o Codigo da editora a ser IncluÃ­da (0 para Encerrar): ";
+        		cin >> codpesq;
+        		if (codpesq != 0)
+            	inclusao_editoras (idxEdt, edt, cont, codpesq);
+    		}
+            break;
     	case 8:
     		for (int codpesq = 9; codpesq != 0;){
-        		cout << "\n\nInforme o código do empréstimo a ser Excluído (0 para Encerrar): ";
+        		cout << "\n\nInforme o cÃ³digo da editora a ser ExcluÃ­do (0 para Encerrar): ";
+        		cin >> codpesq;
+        		if (codpesq != 0)
+            	exclusao_editora (idxEdt, edt, cont, codpesq);
+    		}
+    		break;
+    	case 9:
+    		for (int codpesq = 9; codpesq != 0;){
+        		cout << "\n\nInforme o Codigo do livro a ser IncluÃ­do (0 para Encerrar): ";
+        		cin >> codpesq;
+        		if (codpesq != 0)
+            	inclusao_livros (idxL, liv, cont, codpesq);
+    		}
+    		break;
+    	case 10:
+    		for (int codpesq = 9; codpesq != 0;){
+        		cout << "\n\nInforme o cÃ³digo do livro a ser ExcluÃ­do (0 para Encerrar): ";
+        		cin >> codpesq;
+        		if (codpesq != 0)
+            	exclusao_livros (idxL, liv, cont, codpesq);
+    		}
+    		break;
+    	case 11:
+    		for (int codpesq = 9; codpesq != 0;){
+        		cout << "\n\nInforme o cÃ³digo do emprÃ©stimo a ser ExcluÃ­do (0 para Encerrar): ";
         		cin >> codpesq;
         		if (codpesq != 0)
             	exclusao_emprestimo (idxEmp, emp, cont, codpesq);
         }
         	break;
-        case 9:
+        case 12:
         	devolver_livro(liv, idxL, cont);
         	break;
-        case 10:
-				
-        
-        	
+        case 13:
+        	atraso(emp, idxEmp, cont, liv, idxL);
+        	break;
 		default:
-    	cout<<"\nOpção inválida!\n\n";
+    	cout<<"\nOpÃ§Ã£o invÃ¡lida!\n\n";
 
 		}
-		cout<<"\nDeseja escolher outra opcao?\n 1 - Sim \n 0 - Não\n";
+		cout<<"\nDeseja escolher outra opcao?\n 1 - Sim \n 0 - NÃ£o\n";
   		cin>>x;
 	}
 	
